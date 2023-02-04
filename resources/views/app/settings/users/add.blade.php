@@ -10,7 +10,7 @@
                 <h4 class="card-title mb-0">{{$title}}</h4>
             </div>
             <div class="card-body">
-                <form action="{{url('/settings/users/addUser')}}" method="post" id="from-add-user">
+                <form action="{{url('/settings/users/addUser')}}" method="post" id="from-add-user" enctype="multipart/form-data">
                     @csrf
                     <div>
                         <h5 class="mb-1">Contact Informations</h5>
@@ -43,7 +43,28 @@
                                 <input type="text" class="form-control" id="phone" name="contact[phone]" placeholder="Phone number">
                                 <div class="invalid-feedback"></div>
                             </div>
-                        </div>  
+                        </div> 
+                        <div class="col-xxl-3 col-md-6">
+                            <div>
+                                <label for="date_birth" class="form-label">Date of birth</label>
+                                <input type="date" class="form-control" id="date_birth" name="contact[date_birth]">
+                            </div>
+                        </div> 
+                        <div class="col-xxl-3 col-md-6">
+                            <label class="form-label">Sexe</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="contact[sexe]" id="sexe-1" value="Mr">
+                                <label class="form-check-label" for="sexe-1">
+                                    Mr
+                                </label>
+                            </div>                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="contact[sexe]" id="sexe-2" value="Miss">
+                                <label class="form-check-label" for="sexe-2">
+                                    Miss
+                                </label>
+                            </div> 
+                        </div> 
                     </div>
                     <div>
                         <h5 class="mb-1">User Informations</h5>

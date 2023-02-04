@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\app\settings;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Tools;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Contact;
 use App\Traits\userSession;
 
 class Users extends Controller
@@ -140,18 +142,26 @@ class Users extends Controller
         return view('app.settings.users.add',['roles'=>$roles]);
     }
 
-    public function addUserForm(){
+    public function addUserForm(Request $request){
         $inputs = $request->all();
         $contact = $inputs['contact'];
         $user = $inputs['user'];
         if(isset($contact['first_name']) && !empty($contact['last_name']) && !empty($contact['email']) && !empty($user['username']) && !empty($user['role_id']) && !empty($user['password'])){
             $check = User::where('username',$user['username'])->where('status',1)->count();
             if($check === 0){
+                if(isset($inputs['profil_pic'])){
+                    $user['profil_pic'] = Tools::upload_file_image($request->profil_pic,'users');
+                }
                 $user['status'] = 1;
                 $user['created_by'] = $this->user()->id;
                 $user['updated_by'] = $this->user()->id;
-                $add = Role::create($role);
-                if($add)  return redirect('/settings/roles/list')->with('success', 'Role Added!');
+                $user['password'] = \Hash::make($user['password']);
+                $add_contact = Contact::create($contact);
+                if($add_contact){
+                    $add_user = $add_contact->user()->create($user);
+                    if($add_user)  return redirect('/settings/users/list')->with('success', 'User Added!');
+                    else return redirect()->back()->with(['error' => 'Server error please try again.']);
+                } 
                 else return redirect()->back()->with(['error' => 'Server error please try again.']);
             }
             else return redirect()->back()->with(['error' => 'The username is already exist.']);

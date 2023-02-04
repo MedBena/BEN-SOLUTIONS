@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class Tools
 {
+    public const UPLOAD_PATH = "uploads/";
      /**
      * Handle emails.
      * @param  String  $object
@@ -30,23 +31,18 @@ class Tools
     public static function _urlRequest($position){
         $url = explode('/',url()->current());   
         if(array_key_exists($position,$url)) return $url[$position];
-        else return NULL;
-          
+        else return NULL;          
     }
 
     /**
      * Handle emails.
      * @param  String  $file
-     * @param  String  $path
+     * @param  String  $folder
      * @return String  $image_path
      */
-    public static function upload_file_image($request,$file,$path){
-        $this->validate($request, [
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-        ]);
-
-        $image_path = $request->file('image')->store('image', $path);
-        
+    public static function upload_file_image($file,$folder){
+        $image_path = rand(1,99).time().'.'.$file->extension();       
+        $file->move(public_path(self::UPLOAD_PATH.$folder), $image_path);
         return $image_path;
     }
 }

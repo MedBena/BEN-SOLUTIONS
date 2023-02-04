@@ -1,10 +1,12 @@
 $(document).ready(function(){
     data_table("#roles-datatables");
 });
+var upload = true;
+var extentions = ['image/apng','image/avif','image/gif','image/jpeg','image/png','image/svg+xml','image/webp'];    
 function previewFile(){
     var file = $('#profil_pic').get(0).files[0];
     var img = '/assets/images/users/user-dummy-img.jpg';
-    var extentions = ['image/apng','image/avif','image/gif','image/jpeg','image/png','image/svg+xml','image/webp'];
+    upload = true;
     if(extentions.includes(file.type)){
         if(file){
             var reader = new FileReader();
@@ -15,6 +17,7 @@ function previewFile(){
         }
     }
     else {
+        upload = false;
         toastify('please enter one of the allowed images type :\n'+extentions.join(),'danger');
         $('.profil_pic').attr('src',window.location.origin+img);
     }
@@ -70,7 +73,8 @@ function handle_add(){
         password.next('div').text('Please enter a strong password');
         return false;
     }
-    form.submit();
+    if(upload) form.submit();
+    else toastify('please enter one of the allowed images type :\n'+extentions.join(),'danger');
 }
 function handle_update(){
     var form = $("#from-update-role"),
