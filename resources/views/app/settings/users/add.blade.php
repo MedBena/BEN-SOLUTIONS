@@ -93,6 +93,19 @@
                     </div>
                     <div class="row gy-4 mb-4">
                         <div class="col-xxl-3 col-md-6">
+                            <div>
+                                <label for="profil_pic" class="form-label">Profile picture</label>
+                                <input class="form-control" name="profil_pic" type="file" id="profil_pic" onchange="previewFile();">
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-md-6">
+                            <div class="mt-4 mt-md-0">
+                                <img class="img-thumbnail rounded-circle avatar-xl profil_pic" alt="200x200" src="{{asset('assets/images/users/user-dummy-img.jpg')}}" data-holder-rendered="true">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row gy-4 mb-4">
+                        <div class="col-xxl-3 col-md-6">
                             <button type="button" onclick="handle_add()" class="btn btn-info">Add</button>
                         </div>
                     </div>

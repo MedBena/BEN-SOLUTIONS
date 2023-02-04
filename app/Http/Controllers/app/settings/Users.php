@@ -141,7 +141,23 @@ class Users extends Controller
     }
 
     public function addUserForm(){
-        
+        $inputs = $request->all();
+        $contact = $inputs['contact'];
+        $user = $inputs['user'];
+        if(isset($contact['first_name']) && !empty($contact['last_name']) && !empty($contact['email']) && !empty($user['username']) && !empty($user['role_id']) && !empty($user['password'])){
+            $check = User::where('username',$user['username'])->where('status',1)->count();
+            if($check === 0){
+                $user['status'] = 1;
+                $user['created_by'] = $this->user()->id;
+                $user['updated_by'] = $this->user()->id;
+                $add = Role::create($role);
+                if($add)  return redirect('/settings/roles/list')->with('success', 'Role Added!');
+                else return redirect()->back()->with(['error' => 'Server error please try again.']);
+            }
+            else return redirect()->back()->with(['error' => 'The username is already exist.']);
+        }
+        else return redirect()->back()->with(['error' => 'Please check the requireds fields.']);
+        return redirect()->back()->with(['error' => 'Server error please try again.']);
     }
 
     /* ---- END USERS FUNCTION  -----*/

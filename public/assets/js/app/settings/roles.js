@@ -1,4 +1,24 @@
-data_table("#roles-datatables");
+$(document).ready(function(){
+    data_table("#roles-datatables");
+});
+function previewFile(){
+    var file = $('#profil_pic').get(0).files[0];
+    var img = '/assets/images/users/user-dummy-img.jpg';
+    var extentions = ['image/apng','image/avif','image/gif','image/jpeg','image/png','image/svg+xml','image/webp'];
+    if(extentions.includes(file.type)){
+        if(file){
+            var reader = new FileReader();
+            reader.onload = function(){
+                $('.profil_pic').attr("src", reader.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+    else {
+        toastify('please enter one of the allowed images type :\n'+extentions.join(),'danger');
+        $('.profil_pic').attr('src',window.location.origin+img);
+    }
+}
 var first_name = $("#first_name"),
     last_name = $("#last_name"),
     email = $("#email"),
