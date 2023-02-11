@@ -42,6 +42,7 @@ Route::prefix('/')->middleware([Application::class])->group(function () {
             Route::get('/list',[Users::class, 'index_users']);
             Route::get('/add',[Users::class, 'addUser']);
             Route::post('/addUser',[Users::class, 'addUserForm']);
+            Route::get('/view/{id}',[Users::class, 'viewUser']);
         });
         Route::prefix('/roles')->group(function () {
             Route::get('/list',[Users::class, 'index_roles']);

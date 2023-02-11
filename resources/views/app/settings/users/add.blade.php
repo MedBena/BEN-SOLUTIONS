@@ -139,5 +139,5 @@
 
 @section('js')
     <script src="{{asset('assets/js/plugins.js')}}"></script>
-    <script src="{{asset('assets/js/app/settings/roles.js')}}"></script>
+    <script src="{{asset('assets/js/app/settings/user.js')}}"></script>
 @endsection

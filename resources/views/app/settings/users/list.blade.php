@@ -42,7 +42,13 @@
                                 <td>{{$item->contact->email}}</td>
                                 <td>{!! $item->get_statut() !!}</td>
                                 <td>{{date('d/m/Y h:i',strtotime($item->created_at))}}</td>
-                                <td><a href="{{url('/')}}" class="btn btn-sm btn-soft-info">Details</a></td>
+                                <td>
+                                    <div class="hstack gap-3 flex-wrap">
+                                        <a href="{{url('/settings/users/view/'.$item->id)}}" class="btn btn-sm btn-soft-info">Details</a>
+                                        <a href="{{url('/settings/users/update/'.$item->id)}}" class="link-success fs-15"><i class="ri-edit-2-line"></i></a>
+                                        <a href="javascript:void(0);" onclick="DeleteWithUrl('{{url('/settings/users/delete/'.$item->id)}}');" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
