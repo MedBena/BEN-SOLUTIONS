@@ -34,6 +34,8 @@
                     @include('layout.menu.menu-home')
                 @elseif(\Request::get('location') === "settings")
                     @include('layout.menu.menu-settings')
+                @elseif(\Request::get('location') === "database")
+                    @include('layout.menu.menu-database')
                 @endif
 
                 {{-- <li class="menu-title"><span data-key="t-menu">Menu</span></li> --}}

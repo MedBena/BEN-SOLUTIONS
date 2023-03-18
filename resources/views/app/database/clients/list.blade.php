@@ -1,5 +1,5 @@
 @php
-    $title = "Users";
+    $title = "Clients";
 @endphp
 @extends('layout.index')
 @section('content')
@@ -9,10 +9,10 @@
             <div class="card-header align-items-center d-flex">
                 <h5 class="card-title mb-0 flex-grow-1">{{$title}}</h5>
                 <div class="flex-shrink-0">
-                    <a href="{{url('/settings/users/add')}}" class="btn btn-soft-info btn-sm">
-                        <i class="ri-add-circle-line align-middle"></i> Add user
+                    <a href="{{url('/database/clients/add')}}" class="btn btn-soft-info btn-sm">
+                        <i class="ri-add-circle-line align-middle"></i> Add client
                     </a>
-                    <a href="{{url('/settings/users/trash')}}" class="btn btn-soft-danger btn-sm">
+                    <a href="{{url('/database/clients/trash')}}" class="btn btn-soft-danger btn-sm">
                         <i class="ri-delete-bin-line align-middle"></i> Trash
                     </a>
                 </div>
@@ -20,7 +20,7 @@
             <div class="card-body">
                <div class="table-responsive">
                 <table id="buttons-datatables" class="display table table-bordered table-nowrap" style="width:100%">
-                    <thead>
+                    {{-- <thead>
                         <tr>
                             <th>REF</th>
                             <th>Username</th>
@@ -31,9 +31,9 @@
                             <th>Created</th>
                             <th>Action</th>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($users as $item)
+                    </thead> --}}
+                    {{-- <tbody>
+                        @foreach ($clients as $item)
                             <tr>
                                 <td>{{"U-".$item->id}}</td>
                                 <td>{{$item->username}}</td>
@@ -44,13 +44,13 @@
                                 <td>{{date('d/m/Y h:i',strtotime($item->created_at))}}</td>
                                 <td>
                                     <div class="hstack gap-3 flex-wrap">
-                                        <a href="{{url('/settings/users/view/'.$item->id)}}" class="btn btn-sm btn-soft-info">Details</a>
-                                        <a href="javascript:void(0);" onclick="DeleteWithUrl('{{url('/settings/users/delete/'.$item->id)}}');" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
+                                        <a href="{{url('/database/clients/view/'.$item->id)}}" class="btn btn-sm btn-soft-info">Details</a>
+                                        <a href="javascript:void(0);" onclick="DeleteWithUrl('{{url('/database/clients/delete/'.$item->id)}}');" class="link-danger fs-15"><i class="ri-delete-bin-line"></i></a>
                                     </div>
                                 </td>
                             </tr>
                         @endforeach
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
         </div>
@@ -59,5 +59,5 @@
 @endsection
 
 @section('js')
-    <script src="{{asset('assets/js/app/settings/user.js')}}"></script>
+    {{-- <script src="{{asset('assets/js/app/database/user.js')}}"></script> --}}
 @endsection

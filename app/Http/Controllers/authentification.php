@@ -94,7 +94,7 @@ class Authentification extends Controller
 
     function _auth($username,$password){
         $validate = User::where('username',$username)
-                            ->with('contact')
+                            ->with('contact','role')
                             ->first();
         if($validate==NULL) return json_encode(['errors' => ["field"=>"username","msg"=>"The username is incorrect."]],JSON_UNESCAPED_UNICODE);            
         if($validate && \Hash::check($password,$validate->password)){    

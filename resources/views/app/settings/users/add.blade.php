@@ -6,8 +6,16 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title mb-0">{{$title}}</h4>
+            <div class="card-header  align-items-center d-flex">
+                <h4 class="card-title mb-0  flex-grow-1">{{$title}}</h4>
+                <div class="flex-shrink-0">
+                    <a href="{{url('/settings/users/list')}}" class="btn btn-soft-info btn-sm">
+                        <i class="ri-add-circle-line align-middle"></i> List user
+                    </a>
+                    <a href="{{url('/settings/users/trash')}}" class="btn btn-soft-danger btn-sm">
+                        <i class="ri-delete-bin-line align-middle"></i> Trash
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <form action="{{url('/settings/users/addUser')}}" method="post" id="from-add-user" enctype="multipart/form-data">

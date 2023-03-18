@@ -142,39 +142,58 @@ class Users extends Controller
             return view('app.settings.users.add',['roles'=>$roles]);
         }
 
-        public function addUserForm(Request $request){
+        public function addUpdUserForm(Request $request){
             $inputs = $request->all();
+            $refs = isset($inputs['refs']) ? explode(',',$inputs['refs']) : [];
             $contact = $inputs['contact'];
             $user = $inputs['user'];
-            if(isset($contact['first_name']) && !empty($contact['last_name']) && !empty($contact['email']) && !empty($user['username']) && !empty($user['role_id']) && !empty($user['password'])){
+            if(count($refs)>0) {
+                if(empty($contact['first_name']) && empty($contact['last_name']) && empty($contact['email']) && empty($user['username']) && empty($user['role_id']))
+                    return redirect()->back()->with(['error' => 'Please check the requireds fields.']);                    
+                $check = User::where('username',$user['username'])->where('status',1)->where('id','<>',$refs[0])->count();
+            }
+            else {
+                if(isset($contact['first_name']) && empty($contact['last_name']) && empty($contact['email']) && empty($user['username']) && empty($user['role_id']) && empty($user['password']))
+                    return redirect()->back()->with(['error' => 'Please check the requireds fields.']);
                 $check = User::where('username',$user['username'])->where('status',1)->count();
-                if($check === 0){
-                    if(isset($inputs['profil_pic'])){
-                        $user['profil_pic'] = Tools::upload_file_image($request->profil_pic,'users');
-                    }
+            }
+            if($check === 0){
+                if(isset($inputs['profil_pic'])){
+                    $user['profil_pic'] = Tools::upload_file_image($request->profil_pic,'users');
+                }
+                if(count($refs)>0) {
+                    $user['updated_by'] = $this->user()->id;
+                    $action = Contact::find($refs[1])->update($contact);  
+                    $action = User::find($refs[0])->update($user); 
+                    $url = '/settings/users/view/'.$refs[0];
+                    $message = 'User updated !'; 
+                }
+                else{
                     $user['status'] = 1;
                     $user['created_by'] = $this->user()->id;
                     $user['updated_by'] = $this->user()->id;
-                    $user['password'] = \Hash::make($user['password']);
-                    $add_contact = Contact::create($contact);
-                    if($add_contact){
-                        $add_user = $add_contact->user()->create($user);
-                        if($add_user)  return redirect('/settings/users/list')->with('success', 'User Added!');
-                        else return redirect()->back()->with(['error' => 'Server error please try again.']);
-                    } 
-                    else return redirect()->back()->with(['error' => 'Server error please try again.']);
-                }
-                else return redirect()->back()->with(['error' => 'The username is already exist.']);
+                    $user['password'] = \Hash::make($user['password']);  
+                    $add_contact = Contact::create($contact);  
+                    $action = $add_contact->user()->create($user);
+                    $url = '/settings/users/list';
+                    $message = 'User Added!';
+                }                
+                if($action)  return redirect($url)->with('success',$message);
+                else return redirect()->back()->with(['error' => 'Server error please try again.']);
             }
-            else return redirect()->back()->with(['error' => 'Please check the requireds fields.']);
+            else return redirect()->back()->with(['error' => 'The username is already exist.']);
+
             return redirect()->back()->with(['error' => 'Server error please try again.']);
         }
 
         public function viewUser($id){
             if(isset($id) && is_numeric($id)){
                 $infos = User::where(['id'=>$id])->with('contact')->first();
+                if($infos == NULL) return redirect()->back()->with(['error' => 'Server error please try again.']); 
                 $public_path = Tools::UPLOAD_PATH;
-                if($infos) return view('app.settings.users.view',['infos'=>$infos,'public_path'=>$public_path]);
+                $roles = Role::select('id','name')->where('status',1)->get();
+                $status = User::STATUS;
+                if($infos) return view('app.settings.users.view',['infos'=>$infos,'public_path'=>$public_path,'roles'=>$roles,'status'=>$status]);
                 else return redirect()->back()->with(['error' => 'Server error please try again.']);
             }
             else return redirect()->back()->with(['error' => 'Server error please try again.']);

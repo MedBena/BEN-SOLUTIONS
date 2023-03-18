@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Authentification;
 use App\Http\Controllers\app\settings\Users;
+use App\Http\Controllers\app\database\Client;
 use App\Http\Middleware\Application;
 
 /*
@@ -41,7 +42,8 @@ Route::prefix('/')->middleware([Application::class])->group(function () {
         Route::prefix('/users')->group(function () {
             Route::get('/list',[Users::class, 'index_users']);
             Route::get('/add',[Users::class, 'addUser']);
-            Route::post('/addUser',[Users::class, 'addUserForm']);
+            Route::post('/addUser',[Users::class, 'addUpdUserForm']);
+            Route::post('/updUser',[Users::class, 'addUpdUserForm']);
             Route::get('/view/{id}',[Users::class, 'viewUser']);
         });
         Route::prefix('/roles')->group(function () {
@@ -55,6 +57,15 @@ Route::prefix('/')->middleware([Application::class])->group(function () {
             Route::get('/trash',[Users::class, 'trashRoles']);     
             Route::get('/get-back/{id}',[Users::class, 'backRole']);
                
+        });
+    });
+    Route::prefix('/database')->group(function () {
+        Route::get('/', function () {
+            return view('app.database.index');
+        });
+        Route::prefix('/clients')->group(function () {
+            Route::get('/list',[Client::class, 'index_clients']);
+            Route::get('/add',[Client::class, 'addClient']);
         });
     });
 });

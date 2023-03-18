@@ -74,3 +74,40 @@ function handle_add(){
     if(upload) form.submit();
     else toastify('please enter one of the allowed images type :\n'+extentions.join(),'danger');
 }
+function handle_upd(){
+    var form = $("#from-upd-user");        
+    form.find('.is-invalid').removeClass('is-invalid');
+    if(first_name.val() === ""){
+        first_name.addClass('is-invalid');
+        first_name.next('div').text('Please enter first name for the user');
+        return false;
+    }
+    if(last_name.val() === ""){
+        last_name.addClass('is-invalid');
+        last_name.next('div').text('Please enter last name for the user');
+        return false;
+    }
+    if(email.val() === ""){
+        email.addClass('is-invalid');
+        email.next('div').text('Please enter email for the user');
+        return false;
+    }
+    var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/; 
+    if(!pattern.test(email.val())){
+        email.addClass('is-invalid');
+        email.next('div').text('Please enter valid e-mail address');
+        return false;
+    }
+    if(username.val() === ""){
+        username.addClass('is-invalid');
+        username.next('div').text('Please enter username for the user');
+        return false;
+    }
+    if(role.val() === ""){
+        role.addClass('is-invalid');
+        toastify('Please select role for the user','danger');
+        return false;
+    }
+    if(upload) form.submit();
+    else toastify('please enter one of the allowed images type :\n'+extentions.join(),'danger');
+}
